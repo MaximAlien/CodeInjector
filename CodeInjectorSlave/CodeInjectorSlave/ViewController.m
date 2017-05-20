@@ -7,15 +7,22 @@
 //
 
 #import "ViewController.h"
+#include <objc/runtime.h>
+
+@interface ViewController ()
+
+@property(nonatomic) IBOutlet NSView *previewView;
+
+@end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
++ (void)load {
+    NSLog(@"%s", __FUNCTION__);
 }
 
-- (void)setRepresentedObject:(id)representedObject {
-    [super setRepresentedObject:representedObject];
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 - (void)showAlertWithTitle:(NSString *)title {
@@ -25,7 +32,95 @@
 }
 
 - (IBAction)showAlert:(id)sender {
-    [self showAlertWithTitle:@"TEST 1"];
+    [self showAlertWithTitle:@"Original alert"];
+
+    // check whether newly injected selector works as expected
+    SEL injectedSelector = NSSelectorFromString(@"injectedSelector");
+    [self performSelectorOnMainThread:injectedSelector withObject:nil waitUntilDone:YES];
+}
+
+#pragma mark - Helper methods
+
+void getMethods(Class class) {
+    uint methodsCount;
+    
+    Method *methods = class_copyMethodList(class, &methodsCount);
+    for (uint i = 0; i < methodsCount; ++i) {
+        SEL selector = method_getName(methods[i]);
+        const char *methodName = sel_getName(selector);
+        
+        NSLog(@"Method name: %@", [NSString stringWithCString:methodName encoding:NSUTF8StringEncoding]);
+        // method_copyReturnType(<#Method m#>)
+        // method_copyArgumentType(<#Method m#>, <#unsigned int index#>)
+    }
+    
+    free(methods);
+    NSLog(@"\n");
+}
+
+void getProperties(Class class) {
+    uint propertiesCount;
+    
+    objc_property_t *properties = class_copyPropertyList(class, &propertiesCount);
+    for (uint i = 0; i < propertiesCount; ++i) {
+        NSLog(@"Property name: %@", [NSString stringWithUTF8String:property_getName(properties[i])]);
+        
+        uint attributesCount;
+        objc_property_attribute_t *propertyAttributes = property_copyAttributeList(properties[i], &attributesCount);
+        
+        for (uint t = 0; t < attributesCount; ++t) {
+            NSString *attribute;
+            switch (propertyAttributes[t].name[0]) {
+                case 'R': // readonly
+                    attribute = @"readonly";
+                    break;
+                case 'C': // copy
+                    attribute = @"copy";
+                    break;
+                case '&': // retain
+                    attribute = @"retain";
+                    break;
+                case 'N': // nonatomic
+                    attribute = @"nonatomic";
+                    break;
+                case 'G': // custom getter
+                    attribute = @"custom getter";
+                    break;
+                case 'S': // custom setter
+                    attribute = @"custom setter";
+                    break;
+                case 'D': // dynamic
+                    attribute = @"dynamic";
+                    break;
+                case 'W': // weak
+                    attribute = @"weak";
+                    break;
+                case 'T': // type
+                    attribute = @"type";
+                    break;
+                case 'P': // eligible for garbage collection
+                    attribute = @"eligible for garbage collection";
+                    break;
+                case 'V': // value
+                    attribute = @"value";
+                    break;
+                default:
+                    break;
+            }
+            
+            NSLog(@"Attribute: %@ (%@).%@",
+                  attribute,
+                  [NSString stringWithUTF8String:&propertyAttributes[t].name[0]],
+                  propertyAttributes[t].name[0] == 'V'
+                  ? [NSString stringWithFormat:@" Value: %@.", [NSString stringWithUTF8String:propertyAttributes->value]]
+                  : @"");
+        }
+        
+        free(propertyAttributes);
+    }
+    
+    free(properties);
+    NSLog(@"\n");
 }
 
 @end

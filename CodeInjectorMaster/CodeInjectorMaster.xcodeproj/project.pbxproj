@@ -318,6 +318,7 @@
 				6D08549A1EC7300F0060EC72 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

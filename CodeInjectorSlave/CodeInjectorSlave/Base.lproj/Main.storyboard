@@ -686,9 +686,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5se-BP-qHG">
-                                <rect key="frame" x="22" y="222" width="66" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="JMA-tv-BLl">
+                                <rect key="frame" x="90" y="20" width="370" height="230"/>
+                            </customView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5se-BP-qHG">
+                                <rect key="frame" x="14" y="222" width="66" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="54" id="GV3-u2-kB4"/>
+                                    <constraint firstAttribute="height" constant="21" id="sTM-sx-0Ys"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="Test" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DN1-JN-fFX">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -698,7 +704,18 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="JMA-tv-BLl" secondAttribute="trailing" constant="20" id="31S-lj-DXz"/>
+                            <constraint firstItem="5se-BP-qHG" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="47E-X1-9pE"/>
+                            <constraint firstItem="JMA-tv-BLl" firstAttribute="leading" secondItem="5se-BP-qHG" secondAttribute="trailing" constant="16" id="9fF-aV-XMC"/>
+                            <constraint firstAttribute="bottom" secondItem="JMA-tv-BLl" secondAttribute="bottom" constant="20" id="Yna-bk-mZi"/>
+                            <constraint firstItem="JMA-tv-BLl" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="jDK-Ra-owo"/>
+                            <constraint firstItem="5se-BP-qHG" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="nD5-hp-dcI"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="previewView" destination="JMA-tv-BLl" id="psK-Id-nHN"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

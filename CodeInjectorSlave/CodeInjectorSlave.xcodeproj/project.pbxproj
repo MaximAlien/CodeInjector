@@ -24,6 +24,7 @@
 		6D0854791EC727D70060EC72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D08547C1EC727D70060EC72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6D08547E1EC727D70060EC72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D8C956F1ECFAB3C00953B04 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +43,7 @@
 			children = (
 				6D08546F1EC727D70060EC72 /* CodeInjectorSlave */,
 				6D08546E1EC727D70060EC72 /* Products */,
+				6D8C956E1ECFAB3C00953B04 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +76,14 @@
 				6D0854741EC727D70060EC72 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6D8C956E1ECFAB3C00953B04 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6D8C956F1ECFAB3C00953B04 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +308,7 @@
 				6D0854831EC727D70060EC72 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
