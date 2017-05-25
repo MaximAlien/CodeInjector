@@ -82,6 +82,10 @@ void injectedMethod(id self, SEL _cmd) {
     NSAlert *alert = [NSAlert new];
     [alert setMessageText:@"Injected alert"];
     [alert runModal];
+    
+    // check whether newly injected selector works as expected
+    SEL injectedSelector = NSSelectorFromString(@"injectedSelector");
+    [self performSelectorOnMainThread:injectedSelector withObject:nil waitUntilDone:YES];
 }
 
 @end
