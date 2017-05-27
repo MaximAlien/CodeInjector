@@ -14,22 +14,54 @@
 @interface ViewController ()
 
 @property(nonatomic) IBOutlet NSView *previewView;
-
 @property(nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+@property(nonatomic) id testInstance;
 
 @end
 
-AVCaptureVideoPreviewLayer* getCaptureVideoPreviewLayer(id self, SEL _cmd) {
+AVCaptureVideoPreviewLayer* getCaptureVideoPreviewLayer(id self,
+                                                        SEL _cmd) {
     Ivar ivar = class_getInstanceVariable([self class], "_captureVideoPreviewLayer");
     
     return object_getIvar(self, ivar);
 }
 
-void setCaptureVideoPreviewLayer(id self, SEL _cmd, AVCaptureVideoPreviewLayer *captureVideoPreviewLayer) {
+void setCaptureVideoPreviewLayer(id self,
+                                 SEL _cmd,
+                                 AVCaptureVideoPreviewLayer *captureVideoPreviewLayer) {
     Ivar ivar = class_getInstanceVariable([self class], "_captureVideoPreviewLayer");
     id oldValue = object_getIvar(self, ivar);
     if (oldValue != captureVideoPreviewLayer) {
         object_setIvar(self, ivar, captureVideoPreviewLayer);
+    }
+}
+
+void didOutputSampleBuffer(id self,
+                           SEL _cmd,
+                           AVCaptureOutput *captureOutput,
+                           CMSampleBufferRef sampleBuffer,
+                           AVCaptureConnection *connection) {
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
+                                                                sampleBuffer,
+                                                                kCMAttachmentMode_ShouldPropagate);
+    CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer
+                                                      options:(__bridge NSDictionary *)attachments];
+    
+    NSCIImageRep *ciImageRep = [NSCIImageRep imageRepWithCIImage:ciImage];
+    NSImage *nsImage = [[NSImage alloc] initWithSize:ciImageRep.size];
+    [nsImage addRepresentation:ciImageRep];
+    
+    NSData *imageData = [nsImage TIFFRepresentation];
+    NSBitmapImageRep *imageRepr = [NSBitmapImageRep imageRepWithData:imageData];
+    NSDictionary *imageProperties = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:1.0f]
+                                                                forKey:NSImageCompressionFactor];
+    imageData = [imageRepr representationUsingType:NSJPEGFileType properties:imageProperties];
+    
+    BOOL res = [imageData writeToFile:[NSString stringWithFormat:@"camera_output.png"]
+                           atomically:NO];
+    if (!res) {
+        NSLog(@"Unable to save camera output.");
     }
 }
 
@@ -68,14 +100,24 @@ void setCaptureVideoPreviewLayer(id self, SEL _cmd, AVCaptureVideoPreviewLayer *
     
     NSLog(@"%s ivar %@", "_captureVideoPreviewLayer", success ? @"was injected." : @"was not injected.");
     
+    SEL didOutputSampleBufferSelector = @selector(captureOutput:didOutputSampleBuffer:fromConnection:);
+    success = class_addMethod(testClass, didOutputSampleBufferSelector, (IMP)didOutputSampleBuffer, "v@:@@");
+    NSLog(@"%s method %@", "didOutputSampleBuffer", success ? @"was added to class." : @"was not added to class.");
+    
     objc_registerClassPair(testClass);
+    
+    // add test protocol to class
+    Protocol *testProtocol = @protocol(AVCaptureVideoDataOutputSampleBufferDelegate);
+    NSLog(@"TestClass conforms to protocol TestProtocol: %d", class_conformsToProtocol(testClass, testProtocol));
+    class_addProtocol(testClass, testProtocol);
+    NSLog(@"TestClass conforms to protocol TestProtocol: %d", class_conformsToProtocol(testClass, testProtocol));
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     Class testClass = NSClassFromString(@"TestClass");
-    id testInstance = [testClass new];
+    self.testInstance = [testClass new];
     
     AVCaptureSession *captureSession = [AVCaptureSession new];
     captureSession.sessionPreset = AVCaptureSessionPreset320x240;
@@ -85,11 +127,8 @@ void setCaptureVideoPreviewLayer(id self, SEL _cmd, AVCaptureVideoPreviewLayer *
     self.captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
     [self.captureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
-    [testInstance performSelector:setCaptureVideoPreviewLayerSelector
-                       withObject:self.captureVideoPreviewLayer];
-    
-    // SEL captureVideoPreviewLayerSelector = NSSelectorFromString(@"captureVideoPreviewLayer");
-    // AVCaptureVideoPreviewLayer *captureVideoPreviewLayer1 = [self.testInstance performSelector:captureVideoPreviewLayerSelector];
+    [self.testInstance performSelector:setCaptureVideoPreviewLayerSelector
+                            withObject:self.captureVideoPreviewLayer];
     
     [captureSession startRunning];
     
@@ -112,7 +151,27 @@ void setCaptureVideoPreviewLayer(id self, SEL _cmd, AVCaptureVideoPreviewLayer *
     
     [captureSession commitConfiguration];
     
-    getProperties([testInstance class]);
+    AVCaptureVideoDataOutput *captureVideoDataOutput = [AVCaptureVideoDataOutput new];
+    
+    NSDictionary *videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInt:kCMPixelFormat_32BGRA]};
+    [captureVideoDataOutput setVideoSettings:videoSettings];
+    [captureVideoDataOutput setAlwaysDiscardsLateVideoFrames:YES];
+    [captureVideoDataOutput setSampleBufferDelegate:self.testInstance
+                                              queue:dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL)];
+    [[captureVideoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:NO];
+    
+    if ([self.captureVideoPreviewLayer.session canAddOutput:captureVideoDataOutput]) {
+        [self.captureVideoPreviewLayer.session addOutput:captureVideoDataOutput];
+    } else {
+        NSLog(@"Unable to add video data output.");
+    }
+    
+    getProperties([self.testInstance class]);
+    getMethods([self.testInstance class]);
+    
+    // check selector encoding
+    // Method thisMethod = class_getInstanceMethod([self class], @selector(captureOutput:didOutputSampleBuffer:fromConnection:));
+    // const char *encoding = method_getTypeEncoding(thisMethod);
 }
 
 - (void)showAlertWithTitle:(NSString *)title {
@@ -123,10 +182,6 @@ void setCaptureVideoPreviewLayer(id self, SEL _cmd, AVCaptureVideoPreviewLayer *
 
 - (IBAction)showAlert:(id)sender {
     [self showAlertWithTitle:@"Original alert"];
-
-    // check whether newly injected selector works as expected
-    SEL injectedSelector = NSSelectorFromString(@"injectedSelector");
-    [self performSelectorOnMainThread:injectedSelector withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark - Helper methods
