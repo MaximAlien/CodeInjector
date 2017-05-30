@@ -12,6 +12,9 @@
 		6D0854781EC727D70060EC72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0854771EC727D70060EC72 /* ViewController.m */; };
 		6D08547A1EC727D70060EC72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D0854791EC727D70060EC72 /* Assets.xcassets */; };
 		6D08547D1EC727D70060EC72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D08547B1EC727D70060EC72 /* Main.storyboard */; };
+		6D1A812D1EDAF7F400B0A8EE /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 6D1A81281EDAF7F400B0A8EE /* Documentation.html */; };
+		6D1A812E1EDAF7F400B0A8EE /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D1A812A1EDAF7F400B0A8EE /* GCDAsyncSocket.m */; };
+		6D1A812F1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D1A812C1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,11 @@
 		6D0854791EC727D70060EC72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D08547C1EC727D70060EC72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6D08547E1EC727D70060EC72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D1A81281EDAF7F400B0A8EE /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
+		6D1A81291EDAF7F400B0A8EE /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		6D1A812A1EDAF7F400B0A8EE /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		6D1A812B1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		6D1A812C1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		6D8C956F1ECFAB3C00953B04 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -58,6 +66,7 @@
 		6D08546F1EC727D70060EC72 /* CodeInjectorSlave */ = {
 			isa = PBXGroup;
 			children = (
+				6D1A81271EDAF7F400B0A8EE /* GCD */,
 				6D0854701EC727D70060EC72 /* AppDelegate.h */,
 				6D0854711EC727D70060EC72 /* AppDelegate.m */,
 				6D0854761EC727D70060EC72 /* ViewController.h */,
@@ -76,6 +85,18 @@
 				6D0854741EC727D70060EC72 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6D1A81271EDAF7F400B0A8EE /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				6D1A81281EDAF7F400B0A8EE /* Documentation.html */,
+				6D1A81291EDAF7F400B0A8EE /* GCDAsyncSocket.h */,
+				6D1A812A1EDAF7F400B0A8EE /* GCDAsyncSocket.m */,
+				6D1A812B1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.h */,
+				6D1A812C1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.m */,
+			);
+			path = GCD;
 			sourceTree = "<group>";
 		};
 		6D8C956E1ECFAB3C00953B04 /* Frameworks */ = {
@@ -145,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D08547A1EC727D70060EC72 /* Assets.xcassets in Resources */,
+				6D1A812D1EDAF7F400B0A8EE /* Documentation.html in Resources */,
 				6D08547D1EC727D70060EC72 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,6 +178,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D1A812E1EDAF7F400B0A8EE /* GCDAsyncSocket.m in Sources */,
+				6D1A812F1EDAF7F400B0A8EE /* GCDAsyncUdpSocket.m in Sources */,
 				6D0854781EC727D70060EC72 /* ViewController.m in Sources */,
 				6D0854751EC727D70060EC72 /* main.m in Sources */,
 				6D0854721EC727D70060EC72 /* AppDelegate.m in Sources */,

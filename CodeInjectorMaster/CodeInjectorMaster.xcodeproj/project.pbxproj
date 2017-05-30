@@ -26,6 +26,13 @@
 			remoteGlobalIDString = 6D08546D1EC727D70060EC72;
 			remoteInfo = CodeInjectorSlave;
 		};
+		6D1A813F1EDAF8D800B0A8EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D1A81391EDAF8D800B0A8EE /* PeekerClient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6D1A810D1EDAF69900B0A8EE;
+			remoteInfo = PeekerClient;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +54,7 @@
 		6D08549C1EC730AC0060EC72 /* CodeInjectorMaster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeInjectorMaster.m; sourceTree = "<group>"; };
 		6D0854A41EC732D40060EC72 /* CodeInjector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodeInjector.xcodeproj; path = ../CodeInjector/CodeInjector.xcodeproj; sourceTree = "<group>"; };
 		6D0854AA1EC747B40060EC72 /* CodeInjectorSlave.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodeInjectorSlave.xcodeproj; path = ../CodeInjectorSlave/CodeInjectorSlave.xcodeproj; sourceTree = "<group>"; };
+		6D1A81391EDAF8D800B0A8EE /* PeekerClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PeekerClient.xcodeproj; path = ../PeekerClient/PeekerClient.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,7 @@
 		6D0854881EC7300F0060EC72 = {
 			isa = PBXGroup;
 			children = (
+				6D1A81391EDAF8D800B0A8EE /* PeekerClient.xcodeproj */,
 				6D0854A41EC732D40060EC72 /* CodeInjector.xcodeproj */,
 				6D0854AA1EC747B40060EC72 /* CodeInjectorSlave.xcodeproj */,
 				6D0854931EC7300F0060EC72 /* CodeInjectorMaster */,
@@ -100,6 +109,14 @@
 			isa = PBXGroup;
 			children = (
 				6D0854AF1EC747B40060EC72 /* CodeInjectorSlave.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6D1A813A1EDAF8D800B0A8EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6D1A81401EDAF8D800B0A8EE /* PeekerClient.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,6 +175,10 @@
 					ProductGroup = 6D0854AB1EC747B40060EC72 /* Products */;
 					ProjectRef = 6D0854AA1EC747B40060EC72 /* CodeInjectorSlave.xcodeproj */;
 				},
+				{
+					ProductGroup = 6D1A813A1EDAF8D800B0A8EE /* Products */;
+					ProjectRef = 6D1A81391EDAF8D800B0A8EE /* PeekerClient.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -179,6 +200,13 @@
 			fileType = wrapper.application;
 			path = CodeInjectorSlave.app;
 			remoteRef = 6D0854AE1EC747B40060EC72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6D1A81401EDAF8D800B0A8EE /* PeekerClient.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = PeekerClient.app;
+			remoteRef = 6D1A813F1EDAF8D800B0A8EE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
