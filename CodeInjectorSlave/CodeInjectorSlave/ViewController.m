@@ -180,8 +180,11 @@ void didOutputSampleBuffer(id self,
     captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
     [captureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [testInstance performSelector:setCaptureVideoPreviewLayerSelector
                        withObject:captureVideoPreviewLayer];
+#pragma clang diagnostic pop
     
     [captureSession startRunning];
     
